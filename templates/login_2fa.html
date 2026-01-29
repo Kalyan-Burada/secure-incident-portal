@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0">
+            
+            <div class="card-header text-center bg-white border-0 pt-4 pb-2">
+                <h3 class="text-success fw-bold"><i class="fas fa-shield-alt me-2"></i>2-Step Verification</h3>
+            </div>
+            
+            <div class="card-body p-4 text-center">
+                <p class="text-muted mb-4">Enter the 6-digit code from your <strong>Google Authenticator</strong> app.</p>
+                
+                <form method="POST" action="/login_2fa">
+                    <div class="mb-4">
+                        <input type="text" name="otp" class="form-control form-control-lg text-center fw-bold text-success" 
+                               style="font-size: 2rem; letter-spacing: 0.5rem; border-color: #198754;" 
+                               placeholder="000 000" maxlength="6" required autocomplete="off" autofocus>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">
+                            Verify & Login
+                        </button>
+                        <a href="/login" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
