@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between"><h2>⚙️ Admin Panel</h2><a href="/dashboard" class="btn btn-outline-secondary">Back</a></div>
+<hr>
+<div class="row">
+    <div class="col-md-7">
+        <h4>Users</h4>
+        <table class="table">
+            <thead><tr><th>User</th><th>Role</th><th>Action</th></tr></thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td><td>{{ u.role }}</td>
+                    <td>{% if u.id != current_user.id %}<a href="/delete_user/{{ u.id }}" class="btn btn-danger btn-sm">Delete</a>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <h4>Audit Logs</h4>
+        <ul class="list-group" style="height: 400px; overflow-y: auto;">
+            {% for log in logs %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div><strong>{{ log.user }}</strong>: {{ log.action }}</div>
+                <small class="text-muted">{{ log.timestamp.strftime('%H:%M') }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
