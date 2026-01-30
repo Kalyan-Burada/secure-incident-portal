@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between"><h2>Confidential Report</h2><a href="/dashboard" class="btn btn-outline-secondary">Back</a></div>
+<div class="card mb-4 border-danger mt-3">
+    <div class="card-header bg-danger text-white">🔓 Decrypted Data (AES-128)</div>
+    <div class="card-body bg-light"><p class="lead monospace">{{ text }}</p></div>
+</div>
+<div class="mb-4">
+    {% if valid %}
+        <div class="alert alert-success">✅ <strong>Valid RSA Signature:</strong> Data is authentic.</div>
+    {% else %}
+        <div class="alert alert-danger">❌ <strong>INVALID SIGNATURE:</strong> Data tampered!</div>
+    {% endif %}
+</div>
+{% if image %}
+    <img src="data:image/png;base64,{{ image }}" class="img-fluid border rounded" style="max-height: 400px;">
+{% endif %}
+{% endblock %}
