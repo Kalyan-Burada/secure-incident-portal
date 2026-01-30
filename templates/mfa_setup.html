@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center">
+    <h2 class="text-primary fw-bold">⚠️ Activate Account</h2>
+    <p class="lead">Scan this code to finish registration.</p>
+    <div class="card p-4 border-warning d-inline-block bg-white shadow-sm">
+        <img src="data:image/png;base64,{{ qr_code }}" style="width: 200px;">
+        <p class="mt-3 text-muted small">Secret Key: {{ secret }}</p>
+        <hr>
+        <form method="POST" action="/verify_mfa_creation">
+            <div class="mb-3">
+                <input type="text" name="otp" class="form-control text-center mx-auto" style="width: 200px; font-size: 1.2rem; letter-spacing: 5px;" placeholder="000000" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">✅ Verify & Create</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
