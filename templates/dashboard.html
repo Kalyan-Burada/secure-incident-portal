@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Dashboard <span class="badge bg-primary">{{ role }}</span></h2>
+    {% if role == 'Admin' %} <a href="/manage_users" class="btn btn-dark">⚙️ Admin Panel</a> {% endif %}
+</div>
+<hr>
+{% if role == 'Employee' %}
+    <div class="bg-light p-4 rounded border">
+        <h4 class="mb-3">Submit Secure Incident</h4>
+        <form method="POST" action="/submit" enctype="multipart/form-data">
+            <textarea name="description" class="form-control mb-3" rows="4" placeholder="Describe threat (Encrypted & Signed)..." required></textarea>
+            <label>Evidence</label><input type="file" name="image" class="form-control mb-3">
+            <button type="submit" class="btn btn-success w-100">🔒 Secure Submit</button>
+        </form>
+    </div>
+{% else %}
+    <table class="table table-hover">
+        <thead class="table-light"><tr><th>ID</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+        {% for r in reports %}
+        <tr>
+            <td>#{{ r.id }}</td>
+            <td><span class="badge bg-success">{{ r.status }}</span></td>
+            <td><a href="/view/{{ r.id }}" class="btn btn-sm btn-info text-white">Decrypt & Verify</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}
