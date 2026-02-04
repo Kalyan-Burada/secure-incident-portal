@@ -32,7 +32,6 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 # ------------------ CRYPTO SETUP ------------------
-# AES Key
 if not os.path.exists("aes_key.key"):
     aes_key = Fernet.generate_key()
     with open("aes_key.key", "wb") as f:
@@ -43,7 +42,6 @@ else:
 
 cipher_suite = Fernet(aes_key)
 
-# RSA Keys
 if not os.path.exists("private_rsa.pem"):
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
@@ -271,10 +269,7 @@ def submit_report():
     db.session.add(report)
     db.session.commit()
     log_action(current_user.username, "Submitted report")
-    flash(
-    "✅ Incident submitted securely. Your report has been encrypted.",
-    "success"
-    )
+    flash("✅ Incident submitted securely. Your report has been encrypted.", "success")
     return redirect(url_for('dashboard'))
 
 # ---------- VIEW REPORT ----------
@@ -299,6 +294,27 @@ def view_report(id):
 
     return render_template('view_report.html',
                            text=text, valid=valid, image=report.image_b64)
+
+# ---------- ADMIN PANEL ROUTES (ADDED ONLY THESE) ----------
+@app.route('/manage_users')
+@login_required
+@role_required(['Admin'])
+def manage_users():
+    users = User.query.all()
+    logs = AuditLog.query.order_by(AuditLog.timestamp.desc()).limit(20).all()
+    return render_template('manage_users.html', users=users, logs=logs)
+
+@app.route('/delete_user/<int:id>')
+@login_required
+@role_required(['Admin'])
+def delete_user(id):
+    user = User.query.get(id)
+    if user and user.id != current_user.id:
+        db.session.delete(user)
+        db.session.commit()
+        log_action(current_user.username, f"Deleted User: {user.username}")
+        flash("User deleted successfully.", "success")
+    return redirect(url_for('manage_users'))
 
 @app.route('/logout')
 def logout():
