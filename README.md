@@ -41,3 +41,23 @@ The system enforces strong security using:
 ---
 
 ## 📂 Project Structure
+
+```
+secure-incident-portal/
+├── app.py                  # Main Flask application
+├── templates/              # HTML templates (UI pages)
+│   ├── base.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── manage_users.html
+│   ├── view_report.html
+│   ├── mfa_setup.html
+│   ├── login_2fa.html
+│   ├── forgot_password.html
+│   └── 403.html
+│
+├── instance/               # Local database & configs (ignored in Git)
+├── .gitignore
+└── README.md
+```
